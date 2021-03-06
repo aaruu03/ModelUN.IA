@@ -15,6 +15,7 @@ export default class BoardUser extends Component {
     UserService.getUserBoard().then(
       response => {
         this.setState({
+          //get committees info and display as links to access committees; current response data is empty so replace with that
           content: response.data
         });
       },
