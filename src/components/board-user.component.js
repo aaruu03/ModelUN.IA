@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from 'react-bootstrap';
 
 import UserService from "../services/user.service";
 
@@ -34,12 +35,19 @@ export default class BoardUser extends Component {
 
   render() {
     return (
-      <div className="container">
-        <header className="jumbotron">
-          <h3>{this.state.content}</h3>
-          <p>USER!!</p>
-        </header>
-      </div>
+      <body>
+        <div className="container">
+          <header className="jumbotron">
+            <h3>{this.state.content}</h3>
+            <p>USER!!</p>
+          </header>
+        </div>
+        <div style={{alignItems: 'right', display: 'flex',  justifyContent:'right'}}>
+                <Button href="/createc">Create Committee</Button>
+
+        </div>
+      </body>
+
     );
   }
 }

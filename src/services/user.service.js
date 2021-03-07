@@ -10,8 +10,18 @@ const getPublicContent = () => {
 const getUserBoard = () => {
   return axios.get(API_URL + "user", { headers: authHeader() });
 };
+//new
+const createCommittee = (username, comname, topic, topic2) => {
+  return axios.post(API_URL + "createc", {
+      username,
+      comname,
+      topic,
+      topic2,
+  });
+};
 
 export default {
   getPublicContent,
   getUserBoard,
+  createCommittee,
 };
