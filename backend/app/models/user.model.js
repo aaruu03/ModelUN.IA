@@ -1,5 +1,36 @@
 const mongoose = require("mongoose");
 
+const committeeSchema = new mongoose.Schema({
+    comname: {
+      type: String,
+      required: true
+    },
+    topic: {
+        type: String,
+        required: true
+    },
+    topic2: {
+        type: String,
+        default: "",
+        required: false
+    },
+    totaltime:{
+        type: Number,
+        default: 0,
+        required: true
+    },
+    gsltime:{
+        type: Number,
+        default: 0,
+        required: true
+    },
+    //delegates:[DelegateSchema],
+    date: {
+        type: Date,
+        default: Date.now
+    }
+});
+
 const User = mongoose.model(
   "User",
   new mongoose.Schema({
@@ -12,14 +43,11 @@ const User = mongoose.model(
         ref: "Role"
       }
     ],
-    committees: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Committee"
-      }
-    ]
+    committees: [committeeSchema],
   })
 );
+
+
 
 module.exports = User;
 

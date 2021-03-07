@@ -1,8 +1,10 @@
 //new
 const config = require("../config/auth.config");
 const db = require("../models");
+const mongoose = require("mongoose");
+const { user } = require("../models");
 const User = db.user;
-const Committee = db.committee; //new
+const Role = db.role;
 
 
 exports.allAccess = (req, res) => {
@@ -10,32 +12,49 @@ exports.allAccess = (req, res) => {
 };
   
 exports.userBoard = (req, res) => {
-  /*getCommitteeCount = (req, res) => {
-    const i = 0;
+    var i = 0;
+    var comdata = [];
+    var subdoc = {};
+    console.log(i);
     console.log("incommittecount");
-    User.findOne({username: req.body.username}).exec((user) => 
+    console.log(req.body);
+    User.findOne({username: "orcawhale"}, (err, user) => 
     {
-      console.log(i);
-      i = user.committees.length;
-    });
-    return i;
-  };
-  res.status(200).send({committeeCount: getCommitteeCount()}); */ //CURRENT WIP DO NOT LOOK
+      if (err) {
+        console.log("Something wrong when updating data!");
+      }
+      console.log("found");
+      console.log(user);
+      //console.log(user.committees);
+      //get committee count
+      //i = user.committees.length - 1;
+      //console.log("com count ",{i});
+      //get committee data??
+      /*for(let j = 0; j < user.committees.length;j++){
+        var comid = user.committees[j];
+        console.log({comid});
+        Committee.findById({_id: "604474ee066a4f0becc9be68"}, (err, committee) =>
+        {
+          console.log("entered");
+          comdata = comdata + [committee.comname, committee.topic, committee.topic2];
+          console.log("comdata after: ", {comdata});
+        });
+      } */ // WIP IGNORE
+      res.status(200).send({committeeCount: i});
+    }); 
   //send committees info
 }; 
 
 
 //new
 exports.createc = (req,res) => {
-
-  const committee = new Committee({
-    comname: req.body.comname,
-    topic: req.body.topic,
-    topic2: req.body.topic2,
-  });
+  
   console.log(committee);
-  console.log(committee.id);
-  User.findOneAndUpdate({username: req.body.username}, {$push:{committees: committee._id}}, {new: true}, (err, doc) => {
+  console.log(committee._id);
+  User.findOneAndUpdate({username: req.body.username}, {$push:{committees: 
+    {comname: req.body.comname,
+    topic: req.body.topic,
+    topic2: req.body.topic2,}}}, {new: true}, (err, doc) => {
     if (err) {
         console.log("Something wrong when updating data!");
     }
