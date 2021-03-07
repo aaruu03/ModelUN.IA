@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config.js").mongoURI;
 
+
 const app = express();
 
 var corsOptions = {
@@ -21,7 +22,7 @@ const db = require("./app/models");
 const Role = db.role;
 
 db.mongoose
-  .connect(dbConfig, {
+  .connect(dbConfig, { useFindAndModify: false }, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
