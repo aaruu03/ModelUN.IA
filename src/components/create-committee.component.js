@@ -55,10 +55,6 @@ const Committee = (props) => {
         console.log("inside if loop");
         const user = AuthService.getCurrentUser();
         const username = user.username;
-        console.log('username is');
-        //console.log(username);
-        console.log('user is');
-        console.log(user);
         userService.createCommittee(username, comname, topic, topic2).then( //new(userservice) //newtest authservice
             (response) => {
               setMessage(response.data.message);
@@ -74,6 +70,8 @@ const Committee = (props) => {
 
            // setLoading(false);
             setMessage(resMessage);
+            setSuccessful(false);
+            
             }
         );
     } /*else {
@@ -89,62 +87,61 @@ const Committee = (props) => {
       <div className="card card-container">
 
         <Form onSubmit={handleSubmit} ref={form}>
-        
-          <div className="form-group">
-            <label htmlFor="comname">Committee name</label>
-            <Input
-              type="text"
-              className="form-control"
-              name="comname"
-              value={comname}
-              onChange={onChangeComName}
-              validations={[required]}
-            />
-          </div>
+          {!successful && (
+            <div>
+              <div className="form-group">
+                <label htmlFor="comname">Committee name</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="comname"
+                  value={comname}
+                  onChange={onChangeComName}
+                  validations={[required]}
+                />
+              </div>
 
-          <div className="form-group">
-            <label htmlFor="topic">Topic</label>
-            <Input
-              type="text"
-              className="form-control"
-              name="topic"
-              value={topic}
-              onChange={onChangeTopic}
-              validations={[required]}
-            />
-          </div>
+              <div className="form-group">
+                <label htmlFor="topic">Topic</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="topic"
+                  value={topic}
+                  onChange={onChangeTopic}
+                  validations={[required]}
+                />
+              </div>
 
-          <div className="form-group">
-            <label htmlFor="topic2">Topic 2</label>
-            <Input
-              type="text"
-              className="form-control"
-              name="topic2"
-              value={topic2}
-              onChange={onChangeTopic2}
-            />
-          </div>
+              <div className="form-group">
+                <label htmlFor="topic2">Topic 2</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="topic2"
+                  value={topic2}
+                  onChange={onChangeTopic2}
+                />
+              </div>
 
-          <div className="form-group">
-            <button className="btn btn-primary btn-block" disabled={loading}>
-              {loading && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              <span>Submit</span>
-            </button>
-          </div>
-
-          {message && (
-            <div className="form-group">
-              <div
-                className={ successful ? "alert alert-success" : "alert alert-danger" }
-                role="alert"
-              >
-                {message}
+              <div className="form-group">
+                <button className="btn btn-primary btn-block">Submit </button> 
               </div>
             </div>
           )}
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
+
+              {message && (
+                <div className="form-group">
+                  <div
+                    className={ successful ? "alert alert-success" : "alert alert-danger" }
+                    role="alert"
+                  >
+                    {message}
+                  </div>
+                </div>
+              )}
+              <CheckButton style={{ display: "none" }} ref={checkBtn} />
+          
         </Form>
       </div>
     </div>
