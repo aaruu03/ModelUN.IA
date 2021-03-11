@@ -5,6 +5,7 @@ import CheckButton from "react-validation/build/button";
 
 import userService from "../services/user.service";
 import AuthService from "../services/auth.service";
+import CommitteeService from "../services/committee.service";
 
 const required = (value) => {
   if (!value) {
@@ -55,7 +56,7 @@ const Committee = (props) => {
         console.log("inside if loop");
         const user = AuthService.getCurrentUser();
         const username = user.username;
-        userService.createCommittee(username, comname, topic, topic2).then( //new(userservice) //newtest authservice
+        CommitteeService.createCommittee(username, comname, topic, topic2).then( //new(userservice) //newtest authservice
             (response) => {
               setMessage(response.data.message);
               setSuccessful(true);

@@ -32,19 +32,9 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
 
-//newtest
-/*const createCommittee = (username, comname, topic, topic2) => {
-  return axios.post(API_URL + "createc", {
-      username,
-      comname,
-      topic,
-      topic2
-  });
-};*/
 export default {
   register,
   login,
   logout,
   getCurrentUser,
-  //createCommittee,
 };

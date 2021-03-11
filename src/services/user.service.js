@@ -7,10 +7,11 @@ const getPublicContent = () => {
   return axios.get(API_URL + "all");
 };
 
-const getUserBoard = () => {
-  return axios.get(API_URL + "user", { headers: authHeader() });
+const getUserBoard = (currusername) => {
+  console.log("username user service", {currusername});
+  return axios.get(API_URL + "user",{ headers: authHeader()});
 };
-//new
+/*
 const createCommittee = (username, comname, topic, topic2) => {
   return axios.post(API_URL + "createc", {
       username,
@@ -18,10 +19,10 @@ const createCommittee = (username, comname, topic, topic2) => {
       topic,
       topic2,
   });
-};
+}; */
 
 export default {
   getPublicContent,
   getUserBoard,
-  createCommittee,
+  //createCommittee,
 };

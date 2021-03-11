@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
-const committeeSchema = new mongoose.Schema({
+const { nanoid } = require('nanoid');
+/*const committeeSchema = new mongoose.Schema({
     comname: {
       type: String,
       required: true
@@ -29,25 +29,33 @@ const committeeSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}); */
 
 const User = mongoose.model(
   "User",
   new mongoose.Schema({
-    username: String,
+    username: {
+      type: String,
+      unique: true,
+    },
     email: String,
     password: String,
+    userID: {type: String, default: () => nanoid() },
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Role"
       }
     ],
-    committees: [committeeSchema],
+    committees: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Committee"
+      }
+    ],
+    //committees: [committeeSchema],
   })
 );
-
-
 
 module.exports = User;
 

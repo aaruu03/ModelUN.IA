@@ -98,6 +98,12 @@ exports.signin = (req, res) => {
       for (let i = 0; i < user.roles.length; i++) {
         authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
       }
+
+      //test for global var
+      console.log("og id: ", user.userID);
+      global.currUserID = user.userID;
+      console.log("global: ", currUserID);
+
       res.status(200).send({
         id: user._id,
         username: user.username,
