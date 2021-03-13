@@ -41,7 +41,7 @@ exports.userBoard = (req, res) => {
         {
           console.log("works! ", com);
           console.log("comdata before: ", {comdata});
-          comdata.push([com.comname, com.topic, com.topic2]);
+          comdata.push([com.comname, com.topic, com.topic2, com._id]);
           console.log("comdata after: ", {comdata});
           if(j == user.committees.length - 1){
             console.log("inside", comdata);

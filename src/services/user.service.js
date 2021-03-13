@@ -8,7 +8,6 @@ const getPublicContent = () => {
 };
 
 const getUserBoard = (currusername) => {
-  console.log("username user service", {currusername});
   return axios.get(API_URL + "user",{ headers: authHeader()});
 };
 /*

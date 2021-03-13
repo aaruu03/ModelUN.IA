@@ -10,7 +10,8 @@ import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
-import Committee from "./components/create-committee.component";
+import CommitteeC from "./components/create-committee.component";
+import Committee from "./components/committee.component";
 
 
 class App extends Component {
@@ -99,7 +100,8 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/user" component={BoardUser} />
-            <Route exact path="/createc" component={Committee} />
+            <Route exact path="/createc" component={CommitteeC} />
+            <Route path="/committee/:id" component={Committee} />
           </Switch>
         </div>
       </div>

@@ -11,5 +11,5 @@ module.exports = function(app) {
   });
   //new
   app.post("/api/test/createc", controller.createc);
- // app.get("/api/test/user", [authJwt.verifyToken], controller.getCommittees);
+  app.post("/api/test/committee/:id", controller.getCommittee);
 };

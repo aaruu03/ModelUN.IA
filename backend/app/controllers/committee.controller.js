@@ -41,34 +41,13 @@ exports.createc = (req,res) => {
     res.send({ message: "Committee was created successfully!" });
 }; 
 
-/*exports.getCommittees = (req, res) => {
-    res.status(200).send("This works");
-}; */
 
-/*exports.getCommittees = (req, res) => {
-    var i = 0;
-    var comdata = [];
-    //finds user
-    User.findOne({username: "orcawhales"}, (err, user) => 
-    {
-      if (err) {
-        console.log("Something wrong when updating data!");
-      }
-      //get committee count
-      i = user.committees.length;
-      console.log("com count ",{i});
-      //get committee data
-      for(let j = 0; j < user.committees.length;j++){
-        var com = user.committees[j];
-        console.log({com});
-        //test to see if can get id -> works
-        console.log("id: ", com.id);
-        //check if comdata retrieve works
-        console.log("comdata before: ", {comdata});
-        comdata.push([com.comname, com.topic, com.topic2]);
-        console.log("comdata after: ", {comdata});
-      } 
-      res.status(200).send({committeeCount: i, committeeData: comdata});
-    }); 
-  //send committees info
-}; */ //WIP BEING MODIFIED
+
+
+exports.getCommittee = (req, res) => {
+  console.log("committee look up id: ", req.body.id);
+  Committee.findById(req.body.id, (err,com) =>
+  {
+    res.status(200).send({committeeName: com.comname, committeeTopic: com.topic, committeeTopic2: com.topic2} );
+  });
+}; 

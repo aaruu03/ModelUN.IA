@@ -17,7 +17,7 @@ const required = (value) => {
   }
 };
 
-const Committee = (props) => {
+const CommitteeC = (props) => {
   const form = useRef();
   const checkBtn = useRef();
 
@@ -149,4 +149,4 @@ const Committee = (props) => {
   );
 };
 
-export default Committee;
+export default CommitteeC;

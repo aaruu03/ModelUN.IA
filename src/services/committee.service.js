@@ -12,13 +12,11 @@ const createCommittee = (username, comname, topic, topic2) => {
     });
 };
 
-const getCommittees = (username) => {
-    return axios.get(API_URL + "user", { headers: authHeader()}, {
-        username,
-    } );
+const getCommittee = (path, id) => {
+    return axios.post(API_URL + path, {id});
 }; 
 
 export default {
     createCommittee,
-    getCommittees,
+    getCommittee,
 };
