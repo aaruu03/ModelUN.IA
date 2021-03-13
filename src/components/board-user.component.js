@@ -56,7 +56,7 @@ export default class BoardUser extends Component {
             return (
               <ul>
                 {items.map((subItems, sIndex) => {
-                  if(i === 1){i = 2; return <li><Link to={"/"} className="link"> Committee: </Link>{subItems} </li>;}
+                  if(i === 1){i = 2; return <li> Committee: {subItems} </li>;}
                   else if (i === 2){i =3; return <li>Topic: {subItems} </li>;}
                   else if(i === 3){i = 4; return <li>Topic 2: {subItems}</li>;}
                   else{i = 1; var items = subItems; return <li><Link to={"/committee/" + subItems} className="link"> Go to committee </Link>{subItems}</li>;}

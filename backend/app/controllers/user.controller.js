@@ -15,12 +15,10 @@ exports.allAccess = (req, res) => {
 exports.userBoard = (req, res) => {
   var i = 0;
   var comdata = [];
-  //username: req.body.currusername
-  console.log("User: " + req.body.currusername);
   User.findOne({userID: global.currUserID}, (err, user) => 
   {
       if (err) {
-        console.log("Something wrong when updating data!");
+        console.log("Something wrong!");
       }
       //get committee count
       i = user.committees.length;
