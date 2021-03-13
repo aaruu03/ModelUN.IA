@@ -12,4 +12,5 @@ module.exports = function(app) {
   //new
   app.post("/api/test/createc", controller.createc);
   app.post("/api/test/committee/:id", controller.getCommittee);
+  app.post("/api/test/deletec/:id", controller.deleteCommittee);
 };

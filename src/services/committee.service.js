@@ -16,7 +16,12 @@ const getCommittee = (path, id) => {
     return axios.post(API_URL + path, {id});
 }; 
 
+const deleteCommittee = (id) => {
+    return axios.post(API_URL + "deletec/" + id, {id});
+};
+
 export default {
     createCommittee,
     getCommittee,
+    deleteCommittee,
 };
