@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const e = require("express");
 const User = db.user;
 const Committee = db.committee;
+const Directive = db.directive;
 
 exports.createc = (req,res) => {
 
@@ -66,4 +67,35 @@ exports.deleteCommittee = (req, res) => {
     }
   });
   res.status(200).send("Committee deleted successfully");
+};
+
+
+exports.addDir = (req, res) => {
+  console.log("made it");
+  const directive = new Directive({
+      committeeID: req.body.id,
+      title: req.body.title,
+      dtype: req.body.dtype,
+      description: req.body.description,
+      signatures: req.body.signatures,
+      actions: req.body.actions,
+      pass: req.body.pass
+  });
+  console.log("directive", directive);
+  directive.save((err, directive) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    else{
+      console.log("uyay");
+      Committee.findByIdAndUpdate(req.body.id, {$push: {directives: directive._id}}, {new: true}, (err, committee) =>{
+          if(err){
+            console.log("Something went wrong when updating committee with directive");
+          }
+          console.log(committee);
+      });
+    }
+    res.send({ message: "dir was created successfully!" });
+  });
 };

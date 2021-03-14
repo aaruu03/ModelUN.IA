@@ -1,36 +1,36 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;// Create Schema
-const Committee = mongoose.model(
-    "Committee",
+const Directive = mongoose.model(
+    "Directive",
     new Schema({
-        username:{
+        committeeID:{
             type: String,
             required: true
         },
-        comname: {
+        title: {
             type: String,
             required: true
         },
-        topic: {
+        dtype: {
             type: String,
             required: true
         },
-        topic2: {
+        description: {
             type: String,
-            default: "",
-            required: false
-        },
-        totaltime:{
-            type: Number,
-            default: 0,
             required: true
         },
-        directives: [
-            {
-              type: mongoose.Schema.Types.ObjectId,
-              ref: "Directive"
-            }
-        ],
+        signatures: {
+            type: String,
+            required: true
+        },
+        actions:{
+            type: String,
+            required: true
+        },
+        pass:{
+            type: String,
+            required: true
+        },
         //delegates:[DelegateSchema],
         date: {
             type: Date,
@@ -38,4 +38,4 @@ const Committee = mongoose.model(
         }
     })
 );
-module.exports = Committee;
+module.exports = Directive;

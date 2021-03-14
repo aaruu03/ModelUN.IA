@@ -13,6 +13,7 @@ module.exports = function(app) {
   app.post("/api/test/createc", controller.createc);
   app.post("/api/test/committee/:id", controller.getCommittee);
   app.post("/api/test/deletec/:id", controller.deleteCommittee);
+  app.post("/api/test/diradd/:id", controller.addDir);
 };
 
 //sends information back to frontend for the committee

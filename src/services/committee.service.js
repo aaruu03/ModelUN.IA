@@ -20,9 +20,22 @@ const deleteCommittee = (id) => {
     return axios.post(API_URL + "deletec/" + id, {id});
 };
 
+const addDirectives = (id, title, dtype, description, signatures, actions, pass) => {
+    return axios.post(API_URL + "diradd/" + id, {
+        id,
+        title,
+        dtype,
+        description,
+        signatures,
+        actions,
+        pass
+    });
+};
+
 export default {
     createCommittee,
     getCommittee,
     deleteCommittee,
+    addDirectives,
 };
 //sends requests to committee backend with all necessary information
