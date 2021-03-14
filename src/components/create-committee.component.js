@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, {Component} from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -18,49 +18,61 @@ const required = (value) => {
   }
 };
 
-const CommitteeC = (props) => {
-  const form = useRef();
-  const checkBtn = useRef();
+export default class CommitteeC extends Component {
 
-  const [comname, setComName] = useState("");
-  const [topic, setTopic] = useState("");
-  const [topic2, setTopic2] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [successful, setSuccessful] = useState(false);
+  constructor(props) {
+    super(props);
 
-  const onChangeComName= (e) => {
-    const comname = e.target.value;
-    setComName(comname);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onChangeComName = this.onChangeComName.bind(this);
+    this.onChangeTopic = this.onChangeTopic.bind(this);
+    this.onChangeTopic2 = this.onChangeTopic2.bind(this);
+
+    this.state = {
+      comname: "",
+      topic: "",
+      topic2: false,
+      message: ""
+    };
+  }
+
+  onChangeComName= (e) => {
+    this.setState({
+      comname: e.target.value
+    });
   };
 
-  const onChangeTopic = (e) => {
-    const topic = e.target.value;
-    setTopic(topic);
+  onChangeTopic = (e) => {
+    this.setState({
+      topic: e.target.value
+    });
   };
 
-  const onChangeTopic2 = (e) => {
-    const topic2 = e.target.value;
-    setTopic2(topic2);
+  onChangeTopic2 = (e) => {
+    this.setState({
+      topic2: e.target.value
+    });
   };
 
-  const handleSubmit = (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
-    setMessage("");
-    setSuccessful(false);
-    //setLoading(true);
+    this.setState({
+      message: "",
+      succesful: false,
+    });
 
-    form.current.validateAll();
+    this.form.validateAll();
     console.log("validated all");
-    if (checkBtn.current.context._errors.length === 0) {
-        console.log("inside if loop");
+    if (this.checkBtn.context._errors.length === 0) {
         const user = AuthService.getCurrentUser();
         const username = user.username;
-        CommitteeService.createCommittee(username, comname, topic, topic2).then( //new(userservice) //newtest authservice
+        CommitteeService.createCommittee(username, this.state.comname, this.state.topic, this.state.topic2).then( //new(userservice) //newtest authservice
             (response) => {
-              setMessage(response.data.message);
-              setSuccessful(true);
+              this.setState({
+                message: response.data.message,
+                successful: true
+              });
             },
             (error) => {
             const resMessage =
@@ -70,85 +82,81 @@ const CommitteeC = (props) => {
                 error.message ||
                 error.toString();
 
-           // setLoading(false);
-            setMessage(resMessage);
-            setSuccessful(false);
-            
-            }
+           this.setState({
+            message: resMessage,
+            successful: false
+           });
+          }
         );
-    } /*else {
-      setLoading(false);
-    }*/
+    } 
   };
     
     
 
+  render() {
+    return (
+      <div className="col-md-12">
+        <div className="card card-container">
 
-  return (
-    <div className="col-md-12">
-      <div className="card card-container">
-
-        <Form onSubmit={handleSubmit} ref={form}>
-          {!successful && (
-            <div>
-              <div className="form-group">
-                <label htmlFor="comname">Committee name</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="comname"
-                  value={comname}
-                  onChange={onChangeComName}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="topic">Topic</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="topic"
-                  value={topic}
-                  onChange={onChangeTopic}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="topic2">Topic 2</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="topic2"
-                  value={topic2}
-                  onChange={onChangeTopic2}
-                />
-              </div>
-
-              <div className="form-group">
-                <button className="btn btn-primary btn-block">Submit </button> 
-              </div>
-            </div>
-          )}
-
-              {message && (
+          <Form onSubmit={this.handleSubmit} ref={c => {this.form = c;}}>
+            {!this.state.successful && (
+              <div>
                 <div className="form-group">
-                  <div
-                    className={ successful ? "alert alert-success" : "alert alert-danger" }
-                    role="alert"
-                  >
-                    {message}
-                  </div>
-                  <Button href="/user">Go back to Dashboard</Button>
+                  <label htmlFor="comname">Committee name</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="comname"
+                    value={this.state.comname}
+                    onChange={this.onChangeComName}
+                    validations={[required]}
+                  />
                 </div>
-              )}
-              <CheckButton style={{ display: "none" }} ref={checkBtn} />
-          
-        </Form>
-      </div>
-    </div>
-  );
-};
 
-export default CommitteeC;
+                <div className="form-group">
+                  <label htmlFor="topic">Topic</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="topic"
+                    value={this.state.topic}
+                    onChange={this.onChangeTopic}
+                    validations={[required]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="topic2">Topic 2</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="topic2"
+                    value={this.state.topic2}
+                    onChange={this.onChangeTopic2}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button className="btn btn-primary btn-block">Submit </button> 
+                </div>
+              </div>
+            )}
+
+                {this.state.message && (
+                  <div className="form-group">
+                    <div
+                      className={ this.state.successful ? "alert alert-success" : "alert alert-danger" }
+                      role="alert"
+                    >
+                      {this.state.message}
+                    </div>
+                    <Button href="/user">Go back to Dashboard</Button>
+                  </div>
+                )}
+                <CheckButton style={{ display: "none" }} ref={c => {this.checkBtn = c;}} />
+          </Form>
+        </div>
+      </div>
+    );
+  }
+} 
