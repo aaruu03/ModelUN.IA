@@ -16,7 +16,7 @@ export default class Committee extends Component {
         };
     }
 
-    //gets the path and id to send to the backend to get committee informatio from ID
+    //gets the path and id to send to the backend to get committee information from ID
     componentDidMount(){
         console.log(this.props.location.pathname);
         const path = this.props.location.pathname.substring(1);
