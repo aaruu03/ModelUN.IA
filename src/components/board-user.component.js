@@ -21,8 +21,10 @@ export default class BoardUser extends Component {
         this.setState({
           comCount: response.data.committeeCount,
           comData: response.data.committeeData,
+          comCheck: response.data.committeeData.length,
         });
-        console.log("huh", this.state.comData);
+        console.log("huh", this.state.comData.length);
+        console.log("huh2", this.state.comCheck);
       },
       error => {
         this.setState({
@@ -85,7 +87,7 @@ export default class BoardUser extends Component {
         <div style={{alignItems: 'right', display: 'flex',  justifyContent:'right'}}>
                 <Button href="/createc">Create Committee</Button>
         </div>
-        <this.displayCommittees committees={this.state.comData} />
+        {(this.state.comCount===this.state.comCheck) ? <this.displayCommittees committees={this.state.comData}/> : "Please try refreshing" }
       </body>
       
     );
