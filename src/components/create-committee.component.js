@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import { Button} from 'react-bootstrap';
 
 import userService from "../services/user.service";
 import AuthService from "../services/auth.service";
@@ -139,6 +140,7 @@ const CommitteeC = (props) => {
                   >
                     {message}
                   </div>
+                  <Button href="/user">Go back to Dashboard</Button>
                 </div>
               )}
               <CheckButton style={{ display: "none" }} ref={checkBtn} />

@@ -25,3 +25,4 @@ export default {
     getCommittee,
     deleteCommittee,
 };
+//sends requests to committee backend with all necessary information

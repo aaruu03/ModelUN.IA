@@ -14,3 +14,5 @@ module.exports = function(app) {
   app.post("/api/test/committee/:id", controller.getCommittee);
   app.post("/api/test/deletec/:id", controller.deleteCommittee);
 };
+
+//sends information back to frontend for the committee

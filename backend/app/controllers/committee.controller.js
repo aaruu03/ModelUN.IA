@@ -52,6 +52,7 @@ exports.getCommittee = (req, res) => {
   });
 }; 
 
+//deletes committee, first from user array, then from committee collection
 exports.deleteCommittee = (req, res) => {
   console.log("delete got id", req.body.id);
   User.findOneAndUpdate({userID: global.currUserID}, {$pull: {committees: req.body.id}}, (err, user) => {
@@ -59,5 +60,10 @@ exports.deleteCommittee = (req, res) => {
       console.log("Something went wrong when updating and deleting data");
     }
   }); 
+  Committee.findByIdAndDelete(req.body.id, (err, committee) => {
+    if(err) {
+      console.log("Something went wrong when deleting committee");
+    }
+  });
   res.status(200).send("Committee deleted successfully");
 };

@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import { Button, Card, CardDeck } from 'react-bootstrap';
+import { Button} from 'react-bootstrap';
 import {  Link } from "react-router-dom";
 
 import UserService from "../services/user.service";
-import AuthService from "../services/auth.service";
-import CommitteeService from "../services/committee.service";
 
 export default class BoardUser extends Component {
   constructor(props) {
@@ -15,7 +13,7 @@ export default class BoardUser extends Component {
     };
   }
 
-
+//sends a request to the backend to get all commmittee information of the user to display
   componentDidMount() {
     
     UserService.getUserBoard().then(
@@ -39,6 +37,7 @@ export default class BoardUser extends Component {
     );
   }
 
+  //checks whether comdata is an array, if true, then returns a div w a list of all the committees and their info
   displayCommittees(props) {
     console.log("discom");
     const data = "hi";
@@ -48,7 +47,7 @@ export default class BoardUser extends Component {
     console.log("test2", comdata);
     return(
      <div>
-       {props.committees !== undefined &&
+       {Array.isArray(comdata) &&
 
        <div>
          {comdata.map((items, index) => {
@@ -68,9 +67,9 @@ export default class BoardUser extends Component {
       }
      </div>
     );
-  } //also get back separate array of _ids of committees from initial get request when you get committees
-  //theyll be in the same order of the committees so then when you create the committee lists you can insert the id as the link 
-  //ALTERNATIVELY, insert the id as the 4th field in the same committee info array and then make a fourth bullet point as the link w the id to redirect
+  } 
+  //Inserts the id as the 4th field in the same committee info array and 
+  //then make a fourth bullet point as the link w the id to redirect
 
   render() {
     return (
@@ -80,7 +79,7 @@ export default class BoardUser extends Component {
             <h3>Dashboard</h3>
             <p>You can view all your committees here</p>
             <p>number of committees: {this.state.comCount} </p>
-            <p type="committee"> committees: {this.state.comData}</p>
+            <p>{(this.state.comCount > 0) ? "" : this.state.comData }</p>
           </header>
         </div>
         <div style={{alignItems: 'right', display: 'flex',  justifyContent:'right'}}>

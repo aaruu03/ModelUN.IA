@@ -16,11 +16,11 @@ export default class Committee extends Component {
         };
     }
 
+    //gets the path and id to send to the backend to get committee informatio from ID
     componentDidMount(){
         console.log(this.props.location.pathname);
         const path = this.props.location.pathname.substring(1);
         console.log("path", path);
-     //   const id = this.props.location.pathname.substring(11);
         console.log("id", this.state.id);
         CommitteeService.getCommittee(path, this.state.id).then(
             response => {
@@ -28,7 +28,6 @@ export default class Committee extends Component {
                     comName: response.data.committeeName,
                     comTopic: response.data.committeeTopic,
                     comTopic2: response.data.committeeTopic2, 
-                    //content: response.data
                 });
             },
             error => {
@@ -44,6 +43,7 @@ export default class Committee extends Component {
         );
     }
 
+    //sends backend request using committee id to delete committee, then reroutes user to dashboard (user page)
     deleteCommittee(id){
         console.log("should delete now", id);
         CommitteeService.deleteCommittee(id).then(
@@ -79,7 +79,7 @@ export default class Committee extends Component {
                      onClick={() => this.deleteCommittee(this.state.id)}
                      >
                          Delete Committee
-                     </Button>
+                    </Button>
 
                 </div>
             </body>
