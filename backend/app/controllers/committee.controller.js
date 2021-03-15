@@ -72,30 +72,66 @@ exports.deleteCommittee = (req, res) => {
 
 exports.addDir = (req, res) => {
   console.log("made it");
-  const directive = new Directive({
+  req.body.signatures = req.body.signatures.replace(/\s+/g, '');
+  var dirsignatures = req.body.signatures.split(","); 
+  console.log("whitespaces", req.body.signatures);
+  var privdirtype = "";
+
+  //save directive as public
+  if(req.body.dtype === "Public"){
+    var directive = new Directive({
       committeeID: req.body.id,
       title: req.body.title,
-      dtype: req.body.dtype,
+      dtype: {dir: "Public", sponsors: dirsignatures},
       description: req.body.description,
-      signatures: req.body.signatures,
       actions: req.body.actions,
       pass: req.body.pass
-  });
-  console.log("directive", directive);
-  directive.save((err, directive) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
-    else{
-      console.log("uyay");
-      Committee.findByIdAndUpdate(req.body.id, {$push: {directives: directive._id}}, {new: true}, (err, committee) =>{
-          if(err){
-            console.log("Something went wrong when updating committee with directive");
-          }
-          console.log(committee);
-      });
-    }
-    res.send({ message: "dir was created successfully!" });
-  });
+    });
+    console.log("directive", directive);
+    directive.save((err, directive) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      else{
+        console.log("uyay");
+        Committee.findByIdAndUpdate(req.body.id, {$push: {directives: directive._id}}, {new: true}, (err, committee) =>{
+            if(err){
+              console.log("Something went wrong when updating committee with directive");
+            }
+            console.log(committee);
+        });
+      }
+      res.send({ message: "dir was created successfully!" });
+    });
+  }
+//save directive as private
+  else{
+    if(req.body.dtype === "Private Covert" ? privdirtype = "Covert" : privdirtype = "Overt")
+    var directive = new Directive({
+      committeeID: req.body.id,
+      title: req.body.title,
+      dtype: {type:"Private", privtype: privdirtype, signatures: dirsignatures},
+      description: req.body.description,
+      actions: req.body.actions,
+      pass: req.body.pass
+    });
+    console.log("directive", directive);
+    directive.save((err, directive) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      else{
+        console.log("uyay");
+        Committee.findByIdAndUpdate(req.body.id, {$push: {directives: directive._id}}, {new: true}, (err, committee) =>{
+            if(err){
+              console.log("Something went wrong when updating committee with directive");
+            }
+            console.log(committee);
+        });
+      }
+      res.send({ message: "dir was created successfully!" });
+    });
+  }
 };

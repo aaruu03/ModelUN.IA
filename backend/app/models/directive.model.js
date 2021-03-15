@@ -1,5 +1,23 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;// Create Schema
+
+const publicDirSchema = new mongoose.Schema({
+    type: String,
+
+    sponsors: {
+      type: Array,
+      required: true
+    },
+});
+const privateDirSchema = new mongoose.Schema({
+    type: String,
+    privtype: String,
+    signatures: {
+      type: Array,
+      required: true
+    },
+});
+
 const Directive = mongoose.model(
     "Directive",
     new Schema({
@@ -12,17 +30,17 @@ const Directive = mongoose.model(
             required: true
         },
         dtype: {
-            type: String,
+            type: {publicDirSchema} || [privateDirSchema] ,
             required: true
-        },
+        }, 
         description: {
             type: String,
             required: true
         },
-        signatures: {
+      /*  signatures: {
             type: String,
             required: true
-        },
+        }, */
         actions:{
             type: String,
             required: true
@@ -31,7 +49,7 @@ const Directive = mongoose.model(
             type: String,
             required: true
         },
-        //delegates:[DelegateSchema],
+//        types:[TypeSchema],
         date: {
             type: Date,
             default: Date.now
