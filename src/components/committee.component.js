@@ -28,6 +28,7 @@ export default class Committee extends Component {
         this.onChangeDescription = this.onChangeDescription.bind(this);
         this.onChangeActions = this.onChangeActions.bind(this);
         this.onChangePass = this.onChangePass.bind(this);
+        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
         console.log(this.props.location.pathname);
         this.state = {
             content: "",
@@ -110,8 +111,13 @@ export default class Committee extends Component {
                         this.setState({
                             message: response.data.message,
                             successful : true,
+                            title: "",
+                            dtype: "",
+                            description: "",
+                            actions: "",
+                            pass: "",
+                            signatures: ""
                         });
-                        this.resetForm();
                     },
                     (error) => {
                         const resMessage =
@@ -129,17 +135,6 @@ export default class Committee extends Component {
             ); 
             
         }
-    }
-
-    resetForm(){
-        this.setState({
-            title: "",
-            dtype: "",
-            description: "",
-            actions: "",
-            pass: "",
-            signatures: ""
-        });
     }
 
     onChangeTitle = (e) => {
@@ -160,7 +155,138 @@ export default class Committee extends Component {
     onChangeSignatures = (e) => {
         this.setState({signatures: e.target.value})
     }
+
+
+    setNewDirective= () => {
+        this.setState({
+            newDirective: !this.state.newDirective,
+        });
+    };
+    forceUpdateHandler(){
+        console.log("force");
+        this.setNewDirective();
+        this.forceUpdate();
+    };
+    getDirectiveForm(){
+        return(
+            <div className="col-md-12">
+                <div className="card card-container">
+                    <Form onSubmit={this.handleSubmit} ref={c => {this.form = c;}}>
+                        
+                        <div>
+                            <div className="form-group">
+                                <label htmlFor="title">Directive title</label>
+                                <Input
+                                    type="text"
+                                    className="form-control"
+                                    name="title"
+                                    value={this.state.title}
+                                    onChange={this.onChangeTitle}
+                                    validations={[required]}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="dtype">Type</label>
+                                <Select
+                                    type="select"
+                                    className="form-control"
+                                    name="dtype"
+                                    value={this.state.dtype}
+                                    onChange={this.onChangeDType}
+                                    validations={[required]}
+                                >
+                                    <option value="">Choose Type</option>
+                                    <option value="Public">Public</option>
+                                    <option value="Private Overt">Private Overt</option>
+                                    <option value="Private Covert">Private Covert</option>
+                                </Select>
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="description">Description</label>
+                                <TextArea
+                                    type="text"
+                                    className="form-control"
+                                    name="description"
+                                    value={this.state.description}
+                                    onChange={this.onChangeDescription}
+                                    validations={[required]}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="signatures">Sponsors/Signatures</label>
+                                <TextArea
+                                    type="text"
+                                    className="form-control"
+                                    name="signatures"
+                                    value={this.state.signatures}
+                                    onChange={this.onChangeSignatures}
+                                    validations={[required]}
+                                />
+                                <p>Please separate names with commas or querying will not work</p>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="actions">Actions</label>
+                                <TextArea
+                                    type="text"
+                                    className="form-control"
+                                    name="actions"
+                                    value={this.state.actions}
+                                    onChange={this.onChangeActions}
+                                    validations={[required]}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="pass">Pass/Fail</label>
+                                <Select
+                                    type="select"
+                                    className="form-control"
+                                    name="pass"
+                                    value={this.state.pass}
+                                    onChange={this.onChangePass}
+                                    validations={[required]}
+                                >
+                                    <option value="">Choose Type</option>
+                                    <option value="Pass">Pass</option>
+                                    <option value="Fail">Fail</option>
+                                </Select>
+                            </div>
+
+                            <div className="form-group">
+                            <button className="btn btn-primary btn-block">Submit </button> 
+                            </div>
+                        </div>
+
+                        {this.state.message && (
+                            <div className="form-group">
+                                <div
+                                className={this.state.successful ? "alert alert-success" : "alert alert-danger" }
+                                role="alert"
+                                >
+                                {this.state.message}
+                                </div>
+                            </div>
+                        )}
+                        <CheckButton style={{ display: "none" }} ref={c => {this.checkBtn = c;}} />
+                    </Form>
+                </div>
+            </div> 
+        );
+    }
+
     render() {
+       const directivePopup = () => {
+            if(!this.state.newDirective)
+            {
+                return(
+                    this.getDirectiveForm()
+                );
+            }
+            else{
+                return(<p>not right now</p>);
+            }
+        };
         return (
             <div>
                 <div className="container">
@@ -169,8 +295,8 @@ export default class Committee extends Component {
                         <h4>Topic: {this.state.comTopic}</h4>
                         <h4>Topic 2: {this.state.comTopic2}</h4>
                         <div style={{alignItems: 'right', display: 'flex',  justifyContent:'right'}}>
-                            <Button href="/home">
-                                View all Directives
+                            <Button onClick={this.forceUpdateHandler}>
+                                {!this.state.newDirective ? "Get Directives" : "Add new Directive"}
                             </Button>
 
                             <Button
@@ -182,109 +308,7 @@ export default class Committee extends Component {
                         </div>
                     </header>
                 </div>
-                <div className="col-md-12">
-                    <div className="card card-container">
-                        <Form onSubmit={this.handleSubmit} ref={c => {this.form = c;}}>
-                            
-                            <div>
-                                <div className="form-group">
-                                    <label htmlFor="title">Directive title</label>
-                                    <Input
-                                        type="text"
-                                        className="form-control"
-                                        name="title"
-                                        value={this.state.title}
-                                        onChange={this.onChangeTitle}
-                                        validations={[required]}
-                                    />
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="dtype">Type</label>
-                                    <Select
-                                        type="select"
-                                        className="form-control"
-                                        name="dtype"
-                                        value={this.state.dtype}
-                                        onChange={this.onChangeDType}
-                                        validations={[required]}
-                                    >
-                                        <option value="">Choose Type</option>
-                                        <option value="Public">Public</option>
-                                        <option value="Private Overt">Private Overt</option>
-                                        <option value="Private Covert">Private Covert</option>
-                                    </Select>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="description">Description</label>
-                                    <TextArea
-                                        type="text"
-                                        className="form-control"
-                                        name="description"
-                                        value={this.state.description}
-                                        onChange={this.onChangeDescription}
-                                        validations={[required]}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="signatures">Sponsors/Signatures</label>
-                                    <TextArea
-                                        type="text"
-                                        className="form-control"
-                                        name="signatures"
-                                        value={this.state.signatures}
-                                        onChange={this.onChangeSignatures}
-                                        validations={[required]}
-                                    />
-                                    <p>Please separate names with commas or querying will not work</p>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="actions">Actions</label>
-                                    <TextArea
-                                        type="text"
-                                        className="form-control"
-                                        name="actions"
-                                        value={this.state.actions}
-                                        onChange={this.onChangeActions}
-                                        validations={[required]}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="pass">Pass/Fail</label>
-                                    <Select
-                                        type="select"
-                                        className="form-control"
-                                        name="pass"
-                                        value={this.state.pass}
-                                        onChange={this.onChangePass}
-                                        validations={[required]}
-                                    >
-                                        <option value="">Choose Type</option>
-                                        <option value="Pass">Pass</option>
-                                        <option value="Fail">Fail</option>
-                                    </Select>
-                                </div>
-
-                                <div className="form-group">
-                                <button className="btn btn-primary btn-block">Submit </button> 
-                                </div>
-                            </div>
-
-                            {this.state.message && (
-                                <div className="form-group">
-                                    <div
-                                    className={this.state.successful ? "alert alert-success" : "alert alert-danger" }
-                                    role="alert"
-                                    >
-                                    {this.state.message}
-                                    </div>
-                                </div>
-                            )}
-                            <CheckButton style={{ display: "none" }} ref={c => {this.checkBtn = c;}} />
-                        </Form>
-                    </div>
-                </div>
+                {directivePopup()}
             </div>
         );    
     }
