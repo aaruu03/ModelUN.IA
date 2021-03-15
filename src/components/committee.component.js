@@ -38,6 +38,7 @@ export default class Committee extends Component {
             description: "",
             actions: "",
             pass: "",
+            signatures: "",
             message: ""
         };
     }
@@ -108,8 +109,9 @@ export default class Committee extends Component {
                     (response) => {
                         this.setState({
                             message: response.data.message,
-                            successful: true
+                            successful : true,
                         });
+                        this.resetForm();
                     },
                     (error) => {
                         const resMessage =
@@ -125,9 +127,20 @@ export default class Committee extends Component {
                         });    
                     }
             ); 
+            
         }
     }
 
+    resetForm(){
+        this.setState({
+            title: "",
+            dtype: "",
+            description: "",
+            actions: "",
+            pass: "",
+            signatures: ""
+        });
+    }
 
     onChangeTitle = (e) => {
         this.setState({title: e.target.value});
@@ -149,7 +162,7 @@ export default class Committee extends Component {
     }
     render() {
         return (
-            <body>
+            <div>
                 <div className="container">
                     <header className="jumbotron">
                         <h3>Committee: {this.state.comName}</h3>
@@ -172,7 +185,7 @@ export default class Committee extends Component {
                 <div className="col-md-12">
                     <div className="card card-container">
                         <Form onSubmit={this.handleSubmit} ref={c => {this.form = c;}}>
-                            {!this.state.successful && (
+                            
                             <div>
                                 <div className="form-group">
                                     <label htmlFor="title">Directive title</label>
@@ -257,7 +270,6 @@ export default class Committee extends Component {
                                 <button className="btn btn-primary btn-block">Submit </button> 
                                 </div>
                             </div>
-                            )}
 
                             {this.state.message && (
                                 <div className="form-group">
@@ -273,7 +285,7 @@ export default class Committee extends Component {
                         </Form>
                     </div>
                 </div>
-            </body>
+            </div>
         );    
     }
 
