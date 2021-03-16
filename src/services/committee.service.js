@@ -32,10 +32,17 @@ const addDirectives = (id, title, dtype, description, signatures, actions, pass)
     });
 };
 
+const getDirectives = (id) => {
+    return axios.post(API_URL + "dirget/" + id, {
+        id,
+    });
+};
+
 export default {
     createCommittee,
     getCommittee,
     deleteCommittee,
     addDirectives,
+    getDirectives,
 };
 //sends requests to committee backend with all necessary information

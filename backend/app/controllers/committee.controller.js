@@ -5,6 +5,7 @@ const e = require("express");
 const User = db.user;
 const Committee = db.committee;
 const Directive = db.directive;
+const async = require('async');
 
 exports.createc = (req,res) => {
 
@@ -82,7 +83,7 @@ exports.addDir = (req, res) => {
     var directive = new Directive({
       committeeID: req.body.id,
       title: req.body.title,
-      dtype: {dir: "Public", sponsors: dirsignatures},
+      dtype: {type: "Public", sponsors: dirsignatures},
       description: req.body.description,
       actions: req.body.actions,
       pass: req.body.pass
@@ -135,3 +136,107 @@ exports.addDir = (req, res) => {
     });
   }
 };
+
+exports.getDir = (req,res) => {
+  async.waterfall([
+    function getComDir(callback) {
+      Committee.findById(req.body.id, (err, committee) => {
+        if(err){
+          res.status(500).send({ message: err });
+          return;
+        }
+        else{
+          console.log(committee.directives);
+          const length = committee.directives.length;
+          //  console.log("beoredirdata", dirdata);
+          var dirdata = [];
+          callback(null, length, 0, dirdata, committee.directives);
+        }
+        
+      }); 
+    },
+    function getDirDB(length, n, dirdata, comdir, callback) {
+      if(n===length){
+        console.log("sendDIRDB dirdata", dirdata);
+        //return(dirdata);
+        callback(null, dirdata);
+      }
+      else{
+        Directive.findById((comdir[n]), (err, directives) => {
+          const directive = {
+            title: directives.title,
+            dtype: (directives.dtype.type === "Public" ? "Public" : ("Private " +  directives.dtype.privtype)),
+            description: directives.description,
+            signatures: (directives.dtype.type === "Public" ? directives.dtype.sponsors : directives.dtype.signatures),
+            actions: directives.actions,
+            pass: directives.pass
+          };
+          console.log("DirDB", directive);
+          dirdata.push( directive);
+          console.log("DIRDB dirdata", dirdata);
+          n++;
+          getDirDB(length, n, dirdata, comdir, callback);
+        }); 
+      }
+    }],function(err, results){
+    res.status(200).send(results);
+  });
+/*  Committee.findById(req.body.id, (err, committee) => {
+    if(err){
+      res.status(500).send({ message: err });
+      return;
+    }
+    else{
+      console.log(committee.directives);
+      const length = committee.directives.length;
+      //  console.log("beoredirdata", dirdata);
+      var dirdata = [];
+      //getDirDB(length, 0, dirdata, committee.directives);
+      //console.log("afterdirdata", dirdata);
+      //res.status(200).send(dirdata);
+
+    }
+    
+  }); */
+};
+/*function getComDir() {
+  Committee.findById(req.body.id, (err, committee) => {
+    if(err){
+      res.status(500).send({ message: err });
+      return;
+    }
+    else{
+      console.log(committee.directives);
+      const length = committee.directives.length;
+      //  console.log("beoredirdata", dirdata);
+      var dirdata = [];
+    }
+    
+  }); 
+  callback(null, length, 0, dirdata, committee.directives);
+} */
+
+/*function getDirDB(length, n, dirdata, comdir, callback) {
+  if(n===length){
+    console.log("sendDIRDB dirdata", dirdata);
+    //return(dirdata);
+    callback(null, dirdata);
+  }
+  else{
+    Directive.findById((comdir[n]), (err, directives) => {
+      const directive = {
+        title: directives.title,
+        dtype: (directives.dtype.type === "Public" ? "Public" : ("Private " +  directives.dtype.privtype)),
+        description: directives.description,
+        signatures: (directives.dtype.type === "Public" ? directives.dtype.sponsors : directives.dtype.signatures),
+        actions: directives.actions,
+        pass: directives.pass
+      };
+      console.log("DirDB", directive);
+      dirdata.push( directive);
+      console.log("DIRDB dirdata", dirdata);
+      n++;
+      getDirDB(length, n, dirdata, comdir);
+    }); 
+  }
+}; */

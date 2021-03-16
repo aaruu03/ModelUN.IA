@@ -6,7 +6,9 @@ const { user } = require("../models");
 const User = db.user;
 const Role = db.role;
 const Committee = db.committee;
-
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
@@ -15,6 +17,7 @@ exports.allAccess = (req, res) => {
 exports.userBoard = (req, res) => {
   var i = 0;
   var comdata = [];
+  //userID: global.currUserID
   User.findOne({userID: global.currUserID}, (err, user) => 
   {
       if (err) {
@@ -32,15 +35,14 @@ exports.userBoard = (req, res) => {
       console.log("testing global user id: ", currUserID);
 
       //get committee data
+
       for(let j = 0; j<user.committees.length; j++){
         var comid = user.committees[j];
         console.log(comid);
         Committee.findById(comid, (err, com) => 
         {
-          console.log("works! ", com);
-          console.log("comdata before: ", {comdata});
           comdata.push([com.comname, com.topic, com.topic2, com._id]);
-          console.log("comdata after: ", {comdata});
+          console.log("forloop");
           if(j == user.committees.length - 1){
             console.log("inside", comdata);
             res.status(200).send({committeeCount: i, committeeData: comdata});

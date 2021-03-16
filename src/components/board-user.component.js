@@ -19,12 +19,13 @@ export default class BoardUser extends Component {
     UserService.getUserBoard().then(
       response => {
         this.setState({
-          comCount: response.data.committeeCount,
           comData: response.data.committeeData,
           comCheck: response.data.committeeData.length,
+          comCount: response.data.committeeCount,
         });
-        console.log("huh", this.state.comData.length);
         console.log("huh2", this.state.comCheck);
+        console.log("huh", this.state.comCount);
+        console.log("huh3", this.state.comData);
       },
       error => {
         this.setState({
@@ -47,31 +48,32 @@ export default class BoardUser extends Component {
     console.log("test", props.committees);
     var comdata = props.committees
     console.log("test2", comdata);
+   
     return(
-     <div>
-       {Array.isArray(comdata) &&
-
-       <div>
-         {comdata.map((items, index) => {
-           var i = 1;
-            return (
-              <ul>
-                {items.map((subItems, sIndex) => {
-                  if(i === 1){i = 2; return <li> Committee: {subItems} </li>;}
-                  else if (i === 2){i =3; return <li>Topic: {subItems} </li>;}
-                  else if(i === 3){i = 4; return <li>Topic 2: {subItems}</li>;}
-                  else{i = 1; var items = subItems; return <li><Link to={"/committee/" + subItems} className="link"> Go to committee </Link>{subItems}</li>;}
-                })}
-              </ul>
-            );
-          })}
-       </div>
-      }
-     </div>
-    );
+      <div>
+        {Array.isArray(comdata) &&
+        <div>
+          {comdata.map((items, index) => {
+            var i = 1;
+             return (
+               <ul>
+                 {items.map((subItems, sIndex) => {
+                   if(i === 1){i = 2; return <li> Committee: {subItems} </li>;}
+                   else if (i === 2){i =3; return <li>Topic: {subItems} </li>;}
+                   else if(i === 3){i = 4; return <li>Topic 2: {subItems}</li>;}
+                   else{i = 1; var items = subItems; return <li><Link to={"/committee/" + subItems} className="link"> Go to committee </Link>{subItems}</li>;}
+                 })}
+               </ul>
+             );
+           })}
+        </div>
+       }
+      </div>
+     );
   } 
   //Inserts the id as the 4th field in the same committee info array and 
   //then make a fourth bullet point as the link w the id to redirect
+  
 
   render() {
     return (
@@ -87,7 +89,9 @@ export default class BoardUser extends Component {
         <div style={{alignItems: 'right', display: 'flex',  justifyContent:'right'}}>
                 <Button href="/createc">Create Committee</Button>
         </div>
-        {(this.state.comCount===this.state.comCheck) ? <this.displayCommittees committees={this.state.comData}/> : "Please try refreshing" }
+
+          {(this.state.comCount===this.state.comCheck || this.state.comCount === 0) ? <this.displayCommittees committees={this.state.comData}/> : "Please try refreshing" }
+
       </body>
       
     );

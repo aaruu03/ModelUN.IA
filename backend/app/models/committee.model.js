@@ -17,7 +17,7 @@ const Committee = mongoose.model(
         },
         topic2: {
             type: String,
-            default: "",
+            default: " ",
             required: false
         },
         totaltime:{

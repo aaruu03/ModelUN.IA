@@ -5,6 +5,7 @@ import Select from "react-validation/build/select";
 import TextArea from "react-validation/build/textarea";
 import CheckButton from "react-validation/build/button";
 import { Button} from 'react-bootstrap';
+import BootstrapTable from 'react-bootstrap-table-next';
 
 import CommitteeService from "../services/committee.service";
 
@@ -40,7 +41,35 @@ export default class Committee extends Component {
             actions: "",
             pass: "",
             signatures: "",
-            message: ""
+            message: "",
+            //bootstrap table stuff
+            columns: [
+                {
+                    dataField: 'title',
+                    text: 'Title'
+                },
+                {
+                    dataField: 'dtype',
+                    text: 'Type'
+                }, 
+                {
+                    dataField: 'description',
+                    text: 'Description',
+                },
+                {
+                    dataField: 'signatures',
+                    text: 'Signatures'
+                },
+                {
+                    dataField: 'actions',
+                    text: 'Actions'
+                },
+                {
+                    dataField: 'pass',
+                    text: 'Pass/Fail'
+                }
+            ],
+            directives: [],
         };
     }
 
@@ -69,7 +98,22 @@ export default class Committee extends Component {
                 });
             }
         );
-    }
+        CommitteeService.getDirectives(this.state.id).then(
+        (response) => {
+            this.setState({
+                directives: response.data,
+            });
+        },
+        (error) => {
+            const resMessage =
+                (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+                error.message ||
+                error.toString();
+        }
+    );
+}
 
     //sends backend request using committee id to delete committee, then reroutes user to dashboard (user page)
     deleteCommittee(id){
@@ -164,7 +208,7 @@ export default class Committee extends Component {
     };
     forceUpdateHandler(){
         console.log("force");
-        this.setNewDirective();
+        //this.setNewDirective();
         this.forceUpdate();
     };
     getDirectiveForm(){
@@ -274,19 +318,36 @@ export default class Committee extends Component {
             </div> 
         );
     }
-
+    getBootstrapTable(){
+        
+        return(
+            <div className="container" style={{ marginTop: 50 }}>
+                <BootstrapTable 
+                striped
+                hover
+                keyField='id' 
+                data={ this.state.directives } 
+                columns={ this.state.columns } />
+            </div>
+        );
+    }
     render() {
-       const directivePopup = () => {
+        const directivePopup = () => {
             if(!this.state.newDirective)
             {
+                console.log("new direct", this.state.newDirective);
                 return(
                     this.getDirectiveForm()
                 );
             }
-            else{
-                return(<p>not right now</p>);
+            else if (this.state.newDirective){
+                console.log("new direct2", this.state.newDirective);
+                return(this.getBootstrapTable());
             }
-        };
+            else{
+                return(<p>There was an error please try again</p>);
+            }
+        }; 
         return (
             <div>
                 <div className="container">
@@ -295,7 +356,7 @@ export default class Committee extends Component {
                         <h4>Topic: {this.state.comTopic}</h4>
                         <h4>Topic 2: {this.state.comTopic2}</h4>
                         <div style={{alignItems: 'right', display: 'flex',  justifyContent:'right'}}>
-                            <Button onClick={this.forceUpdateHandler}>
+                            <Button onClick={this.setNewDirective}>
                                 {!this.state.newDirective ? "Get Directives" : "Add new Directive"}
                             </Button>
 
