@@ -1,35 +1,5 @@
 const mongoose = require("mongoose");
 const { nanoid } = require('nanoid');
-/*const committeeSchema = new mongoose.Schema({
-    comname: {
-      type: String,
-      required: true
-    },
-    topic: {
-        type: String,
-        required: true
-    },
-    topic2: {
-        type: String,
-        default: "",
-        required: false
-    },
-    totaltime:{
-        type: Number,
-        default: 0,
-        required: true
-    },
-    gsltime:{
-        type: Number,
-        default: 0,
-        required: true
-    },
-    //delegates:[DelegateSchema],
-    date: {
-        type: Date,
-        default: Date.now
-    }
-}); */
 
 const User = mongoose.model(
   "User",
@@ -53,7 +23,6 @@ const User = mongoose.model(
         ref: "Committee"
       }
     ],
-    //committees: [committeeSchema],
   })
 );
 

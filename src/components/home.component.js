@@ -33,7 +33,6 @@ export default class Home extends Component {
     return (
       <div className="container">
         <header className="jumbotron">
-          <h3>{this.state.content}</h3>
           <h3>Welcome to Simunulate</h3>
           <p>Please login or sign up to view and use all features</p>
         </header>

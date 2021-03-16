@@ -97,6 +97,7 @@ export default class CommitteeC extends Component {
     return (
       <div className="col-md-12">
         <div className="card card-container">
+        <h3 align="center">Create New Committee</h3>
 
           <Form onSubmit={this.handleSubmit} ref={c => {this.form = c;}}>
             {!this.state.successful && (

@@ -6,18 +6,15 @@ const { user } = require("../models");
 const User = db.user;
 const Role = db.role;
 const Committee = db.committee;
-const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
+const async = require('async');
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
 };
   
-exports.userBoard = (req, res) => {
+/*exports.userBoard = (req, res) => {
   var i = 0;
   var comdata = [];
-  //userID: global.currUserID
   User.findOne({userID: global.currUserID}, (err, user) => 
   {
       if (err) {
@@ -49,35 +46,49 @@ exports.userBoard = (req, res) => {
           }
         });
       }
-      //return committee count & data
   }); 
-};
-/*exports.userBoard = (req, res) => {
-    var i = 0;
-    var comdata = [];
-    //finds user
-    User.findOne({username: "orcawhales"}, (err, user) => 
-    {
-      if (err) {
-        console.log("Something wrong when updating data!");
+}; */
+
+exports.userBoard = (req, res) => {
+  async.waterfall([
+    function getUser(callback){
+      User.findOne({userID: global.currUserID}, (err, user) =>{
+        if (err) {
+          console.log("Something wrong!");
+        }
+        //get committee count
+        i = user.committees.length;
+        console.log("com count ",{i});
+
+        if(i == 0){
+          res.status(200).send({committeeCount: i, committeeData: "You don't have any committees yet!"});
+          return;s
+        }
+        else{
+          comdata = [];
+          callback(null, i, 0, user.committees, comdata,);
+        }
+      });
+    },
+    function getComs(i, n, usercom, comdata, callback){
+      if(n=== i){
+        callback(null, i, comdata);
       }
-      //get committee count
-      i = user.committees.length;
-      console.log("com count ",{i});
-      //get committee data
-      for(let j = 0; j < user.committees.length;j++){
-        var com = user.committees[j];
-        console.log({com});
-        //test to see if can get id -> works
-        console.log("id: ", com.id);
-        //check if comdata retrieve works
-        console.log("comdata before: ", {comdata});
-        comdata.push([com.comname, com.topic, com.topic2]);
-        console.log("comdata after: ", {comdata});
-      } 
-      res.status(200).send({committeeCount: i, committeeData: comdata});
-    }); 
-  //send committees info
-}; */ //WIP 
+      else{
+        Committee.findById(usercom[n], (err, com) => 
+        {
+          comdata.push([com.comname, com.topic, com.topic2, com._id]);
+          n++;
+          getComs(i, n, usercom, comdata, callback);
+        });
+      }
+    }
+  ], function (err, i, comdata){
+    console.log("i", i);
+    console.log("comdata", comdata);
+    res.status(200).send({committeeCount: i, committeeData: comdata});
+  });
+}; 
+
 
 

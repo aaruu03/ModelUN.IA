@@ -37,10 +37,6 @@ const Directive = mongoose.model(
             type: String,
             required: true
         },
-      /*  signatures: {
-            type: String,
-            required: true
-        }, */
         actions:{
             type: String,
             required: true
@@ -49,7 +45,6 @@ const Directive = mongoose.model(
             type: String,
             required: true
         },
-//        types:[TypeSchema],
         date: {
             type: Date,
             default: Date.now

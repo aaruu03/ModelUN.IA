@@ -19,6 +19,7 @@ const required = (value) => {
     }
 };
 
+
 export default class Committee extends Component {
     constructor(props) {
         super(props);
@@ -31,10 +32,12 @@ export default class Committee extends Component {
         this.onChangePass = this.onChangePass.bind(this);
         this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
         console.log(this.props.location.pathname);
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
         this.state = {
             content: "",
             id: this.props.location.pathname.substring(11),
-            newDirective: false,
+            newDirective: urlParams.get('dir'),
             title: "",
             dtype: "",
             description: "",
@@ -204,13 +207,19 @@ export default class Committee extends Component {
     setNewDirective= () => {
         this.setState({
             newDirective: !this.state.newDirective,
-        });
+        }); 
+        console.log("setnewdir", this.state.newDirective);
+        this.props.history.push(`/committee/${this.state.id}?dir=${this.state.newDirective}`);
+        //window.location.reload();
     };
     forceUpdateHandler(){
         console.log("force");
         //this.setNewDirective();
         this.forceUpdate();
     };
+    forceReload(){
+        window.location.reload(true);
+    }
     getDirectiveForm(){
         return(
             <div className="col-md-12">
@@ -333,14 +342,14 @@ export default class Committee extends Component {
     }
     render() {
         const directivePopup = () => {
-            if(!this.state.newDirective)
+            if(this.state.newDirective)
             {
                 console.log("new direct", this.state.newDirective);
                 return(
                     this.getDirectiveForm()
                 );
             }
-            else if (this.state.newDirective){
+            else if (!this.state.newDirective){
                 console.log("new direct2", this.state.newDirective);
                 return(this.getBootstrapTable());
             }
@@ -348,6 +357,7 @@ export default class Committee extends Component {
                 return(<p>There was an error please try again</p>);
             }
         }; 
+
         return (
             <div>
                 <div className="container">
@@ -356,9 +366,14 @@ export default class Committee extends Component {
                         <h4>Topic: {this.state.comTopic}</h4>
                         <h4>Topic 2: {this.state.comTopic2}</h4>
                         <div style={{alignItems: 'right', display: 'flex',  justifyContent:'right'}}>
-                            <Button onClick={this.setNewDirective}>
-                                {!this.state.newDirective ? "Get Directives" : "Add new Directive"}
+                            <Button onClick={this.setNewDirective} >
+                                {this.state.newDirective ? "Get Directives" : "Add new Directive"}
                             </Button>
+                            {this.state.newDirective ? "" : 
+                                <Button onClick={this.forceReload} >
+                                    Refresh
+                                </Button>
+                            }
 
                             <Button
                             variant="danger"
@@ -375,5 +390,3 @@ export default class Committee extends Component {
     }
 
 }
-
-//{this.state.newDirective === true ? <this.newDirectivePopup dir={this.state}/> : ""}

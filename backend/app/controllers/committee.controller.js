@@ -12,7 +12,7 @@ exports.createc = (req,res) => {
     var comid = "";
 
     const committee = new Committee({
-        username: req.body.username,
+        userID: global.currUserID,
         comname: req.body.comname,
         topic: req.body.topic,
         topic2: req.body.topic2
@@ -181,62 +181,4 @@ exports.getDir = (req,res) => {
     }],function(err, results){
     res.status(200).send(results);
   });
-/*  Committee.findById(req.body.id, (err, committee) => {
-    if(err){
-      res.status(500).send({ message: err });
-      return;
-    }
-    else{
-      console.log(committee.directives);
-      const length = committee.directives.length;
-      //  console.log("beoredirdata", dirdata);
-      var dirdata = [];
-      //getDirDB(length, 0, dirdata, committee.directives);
-      //console.log("afterdirdata", dirdata);
-      //res.status(200).send(dirdata);
-
-    }
-    
-  }); */
 };
-/*function getComDir() {
-  Committee.findById(req.body.id, (err, committee) => {
-    if(err){
-      res.status(500).send({ message: err });
-      return;
-    }
-    else{
-      console.log(committee.directives);
-      const length = committee.directives.length;
-      //  console.log("beoredirdata", dirdata);
-      var dirdata = [];
-    }
-    
-  }); 
-  callback(null, length, 0, dirdata, committee.directives);
-} */
-
-/*function getDirDB(length, n, dirdata, comdir, callback) {
-  if(n===length){
-    console.log("sendDIRDB dirdata", dirdata);
-    //return(dirdata);
-    callback(null, dirdata);
-  }
-  else{
-    Directive.findById((comdir[n]), (err, directives) => {
-      const directive = {
-        title: directives.title,
-        dtype: (directives.dtype.type === "Public" ? "Public" : ("Private " +  directives.dtype.privtype)),
-        description: directives.description,
-        signatures: (directives.dtype.type === "Public" ? directives.dtype.sponsors : directives.dtype.signatures),
-        actions: directives.actions,
-        pass: directives.pass
-      };
-      console.log("DirDB", directive);
-      dirdata.push( directive);
-      console.log("DIRDB dirdata", dirdata);
-      n++;
-      getDirDB(length, n, dirdata, comdir);
-    }); 
-  }
-}; */

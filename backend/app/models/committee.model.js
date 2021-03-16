@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;// Create Schema
 const Committee = mongoose.model(
     "Committee",
     new Schema({
-        username:{
+        userID:{
             type: String,
             required: true
         },
@@ -20,18 +20,12 @@ const Committee = mongoose.model(
             default: " ",
             required: false
         },
-        totaltime:{
-            type: Number,
-            default: 0,
-            required: true
-        },
         directives: [
             {
               type: mongoose.Schema.Types.ObjectId,
               ref: "Directive"
             }
         ],
-        //delegates:[DelegateSchema],
         date: {
             type: Date,
             default: Date.now
