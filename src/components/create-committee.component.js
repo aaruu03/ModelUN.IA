@@ -31,7 +31,7 @@ export default class CommitteeC extends Component {
     this.state = {
       comname: "",
       topic: "",
-      topic2: false,
+      topic2: "",
       message: ""
     };
   }
