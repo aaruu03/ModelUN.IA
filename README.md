@@ -1,3 +1,13 @@
+Project Description
+Made for an audience who is active in the Model UN Community. 
+Allows for users to create multiple committees with topics and subtopics and manage directives 
+digitally to enhance efficiency in looking up previous and old directives to track committee progress.
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
